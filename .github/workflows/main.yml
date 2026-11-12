@@ -375,8 +375,9 @@ jobs:
           end()};
           </script></body></html>
           __END__
-      - name: Compiler
-        run: gradle assembleDebug --no-daemon
+            - name: Compiler
+        run: |
+          gradle assembleDebug --no-daemon --console=plain > build.log 2>&1 || (grep -E "^e: |What went wrong" -A3 build.log | head -30; exit 1)
       - uses: actions/upload-artifact@v4
         with:
           name: IPFinder-APK
